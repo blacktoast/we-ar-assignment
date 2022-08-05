@@ -1,13 +1,21 @@
+import { Ball } from "./ball";
 import "./style.css";
-import typescriptLogo from "./typescript.svg";
+import { getRandom10to20, getRandomXY } from "./utils";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 const ctx = canvas?.getContext("2d");
 
-if (ctx) {
-  ctx.beginPath();
-  ctx.rect(20, 40, 50, 50);
-  ctx.fillStyle = "#FF0000";
-  ctx.fill();
-  ctx.closePath();
-}
+const run = () => {
+  const ballNumber = getRandom10to20();
+  if (ctx) {
+    Array(ballNumber)
+      .fill(0)
+      .forEach(() => {
+        const radaius = getRandom10to20();
+        const [x, y] = getRandomXY();
+        new Ball(ctx, radaius, x, y);
+      });
+  }
+};
+
+run();
