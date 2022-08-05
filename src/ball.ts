@@ -48,7 +48,7 @@ export class Ball {
     this.draw();
   }
   acc(delta: number) {
-    if (delta.toFixed(5) !== this.delta.toFixed(5)) {
+    if (delta.toFixed(5) !== this.delta.toFixed(5) && Math.ceil(delta) < 1000) {
       this.dx = 200 * (delta / 1000) * Math.cos(this.an);
       this.dy = 200 * (delta / 1000) * Math.sin(this.an);
       console.log(
