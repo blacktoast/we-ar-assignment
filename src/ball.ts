@@ -47,17 +47,26 @@ export class Ball {
 
     this.draw();
   }
-  acc(delta: number) {
-    if (delta.toFixed(5) !== this.delta.toFixed(5) && Math.ceil(delta) < 1000) {
-      this.dx = 200 * (delta / 1000) * Math.cos(this.an);
-      this.dy = 200 * (delta / 1000) * Math.sin(this.an);
-      console.log(
-        "델타타임 차이 발생",
-        delta.toFixed(5),
-        this.delta.toFixed(5)
-      );
+  acc(delta: number, isColision = false) {
+    if (
+      (delta.toFixed(5) !== this.delta.toFixed(5) && Math.ceil(delta) < 1000) ||
+      isColision
+    ) {
+      if (this.dx < 0) {
+        this.dx = this.speed * (1 / 60) * Math.cos(this.an) * -1;
+      } else {
+        this.dx = this.speed * (1 / 60) * Math.cos(this.an);
+      }
+
+      if (this.dy < 0) {
+        this.dy = this.speed * (1 / 60) * Math.sin(this.an) * -1;
+      } else {
+        this.dy = this.speed * (1 / 60) * Math.sin(this.an);
+      }
+
       this.delta = delta;
     }
+
     const posX = this.x + this.dx;
     const posY = this.y + this.dy;
 
@@ -70,6 +79,24 @@ export class Ball {
     }
 
     this.move(delta);
+  }
+
+  // 새로 잡은 좌표가 겹쳐서 계속 콜리전이 발생
+  collision(ball: Ball, delta) {
+    const [posX, posY] = [this.x + this.dx, this.y + this.dy];
+    const [targetX, targetY] = [ball.x + ball.dx, ball.y + ball.dy];
+
+    const xx = Math.ceil(targetX - posX);
+    const yy = Math.ceil(targetY - posY);
+    const sumRadius = Math.ceil(this.radius + ball.radius);
+    // console.log(xx, yy, sumRadius);
+    if (xx ** 2 + yy ** 2 <= sumRadius ** 2) {
+      const tmp = ball.an;
+      ball.an = -this.an;
+      this.an = -tmp;
+      this.acc(delta, true);
+      ball.acc(delta, true);
+    }
   }
 }
 //delta 값에 의한 수정은 계속해서 발생한다.

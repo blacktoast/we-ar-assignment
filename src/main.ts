@@ -1,12 +1,13 @@
 import { Ball } from "./ball";
 import "./style.css";
-import { getRandom10to20, getRandomXY } from "./utils";
+import { getRandom10to20, getRandomSpeed, getRandomXY } from "./utils";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 const ctx = canvas?.getContext("2d");
 
 const run = () => {
   const ballNumber = getRandom10to20();
+
   const balls: Ball[] = [];
   if (ctx) {
     Array(ballNumber)
@@ -14,13 +15,20 @@ const run = () => {
       .forEach(() => {
         const radaius = getRandom10to20();
         const [x, y] = getRandomXY();
-        const a = new Ball(ctx, radaius, x, y, 100);
+        const a = new Ball(ctx, radaius, x, y, getRandomSpeed());
         balls.push(a);
-        // a.draw();
+        a.draw();
       });
+
     const a = (delta: number) => {
-      balls.forEach((ball) => {
-        ball.move(200, 200, delta);
+      balls.forEach((ball, i) => {
+        // ball.acc(delta);
+        for (let j = 0; j < balls.length; j++) {
+          if (i !== j) {
+            ball.collision(balls[j], delta);
+          }
+        }
+        ball.acc(delta);
       });
     };
 
