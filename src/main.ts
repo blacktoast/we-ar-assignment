@@ -22,7 +22,6 @@ const run = () => {
 
     const a = (delta: number) => {
       balls.forEach((ball, i) => {
-        // ball.acc(delta);
         for (let j = 0; j < balls.length; j++) {
           if (i !== j) {
             ball.collision(balls[j], delta);
@@ -36,7 +35,7 @@ const run = () => {
     const play = (tick: number) => {
       const delta = tick - lastTick;
       lastTick = tick;
-      ctx.clearRect(0, 0, canvas?.width, canvas?.height);
+      ctx.clearRect(0, 0, canvas?.width as number, canvas?.height as number);
       a(delta);
       requestAnimationFrame(play);
     };

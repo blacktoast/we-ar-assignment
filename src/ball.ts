@@ -1,6 +1,3 @@
-//TODO 공이 가져야 할 상태는? 랜덤한 내부속도? 이걸 외부에서 넣어줄까?
-// 속도 , 좌표,
-
 export class Ball {
   ctx: CanvasRenderingContext2D;
   radius: number;
@@ -40,7 +37,6 @@ export class Ball {
     this.ctx.closePath();
   }
 
-  //초당 움직이는 픽셀은 frame * 프레임당 움직일 픽셀= 초당 픽셀
   move(delta: number) {
     this.x += this.dx;
     this.y += this.dy;
@@ -81,7 +77,6 @@ export class Ball {
     this.move(delta);
   }
 
-  // 새로 잡은 좌표가 겹쳐서 계속 콜리전이 발생
   collision(ball: Ball, delta) {
     const [posX, posY] = [this.x + this.dx, this.y + this.dy];
     const [targetX, targetY] = [ball.x + ball.dx, ball.y + ball.dy];
@@ -89,7 +84,6 @@ export class Ball {
     const xx = Math.ceil(targetX - posX);
     const yy = Math.ceil(targetY - posY);
     const sumRadius = Math.ceil(this.radius + ball.radius);
-    // console.log(xx, yy, sumRadius);
     if (xx ** 2 + yy ** 2 <= sumRadius ** 2) {
       const tmp = ball.an;
       ball.an = -this.an;
@@ -99,4 +93,3 @@ export class Ball {
     }
   }
 }
-//delta 값에 의한 수정은 계속해서 발생한다.
