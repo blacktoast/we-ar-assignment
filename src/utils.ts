@@ -9,3 +9,7 @@ export const getRandom10to20 = () => {
 export const getRandomXY = () => {
   return [random(20, 980), random(20, 480)];
 };
+
+export const getRandomSpeed = () => {
+  return random(200, 400);
+};
